@@ -14,4 +14,8 @@ class BubbleSort : SortingAlgorithm() {
     }
     _listFlow.emit(list)
   }
+
+  override fun name(): String {
+    return "Bubble Sort"
+  }
 }

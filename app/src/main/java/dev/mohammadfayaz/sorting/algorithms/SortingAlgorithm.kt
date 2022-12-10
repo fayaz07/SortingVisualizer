@@ -9,4 +9,6 @@ abstract class SortingAlgorithm {
   val listFlow: SharedFlow<List<Int>> = _listFlow
 
   abstract suspend fun sort()
+
+  abstract fun name(): String
 }
