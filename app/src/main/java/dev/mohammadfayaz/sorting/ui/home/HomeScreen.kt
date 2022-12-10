@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.mohammadfayaz.sorting.algorithms.SortingAlgorithms
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,22 +38,16 @@ fun HomeScreen() {
       )
       Spacer(modifier = Modifier.padding(top = 8.dp))
 
-      ElevatedButton(onClick = { }) {
-        Text(text = "Bubble Sort")
+      for (algorithm in SortingAlgorithms.values()) {
+        ElevatedButton(
+          onClick = { },
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        ) {
+          Text(text = algorithm.title)
+        }
       }
-      ElevatedButton(onClick = { }) {
-        Text(text = "Selection Sort")
-      }
-      ElevatedButton(onClick = { }) {
-        Text(text = "Insertion Sort")
-      }
-      ElevatedButton(onClick = { }) {
-        Text(text = "Merge Sort")
-      }
-      ElevatedButton(onClick = { }) {
-        Text(text = "Quick Sort")
-      }
-
     }
   }
 }
