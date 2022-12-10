@@ -1,5 +1,7 @@
 package dev.mohammadfayaz.sorting.algorithms
 
+import kotlinx.coroutines.delay
+
 class BubbleSort : SortingAlgorithm() {
   override suspend fun sort() {
     for (i in 0..list.size) {
@@ -13,6 +15,7 @@ class BubbleSort : SortingAlgorithm() {
       }
     }
     _listFlow.emit(list)
+    delay(speed.delay())
   }
 
   override fun name(): String {
