@@ -13,13 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.mohammadfayaz.sorting.algorithms.BubbleSort
 import dev.mohammadfayaz.sorting.algorithms.SortingAlgorithm
 
 @Preview
 @Composable
 private fun SortingScreenPreview() {
-  SortingScreen(BubbleSort())
+  SortingScreen(SortingAlgorithm.BUBBLE_SORT)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,7 +26,7 @@ private fun SortingScreenPreview() {
 fun SortingScreen(algorithm: SortingAlgorithm) {
   Scaffold(
     topBar = {
-      TopAppBar(title = { Text(text = algorithm.name()) })
+      TopAppBar(title = { Text(text = algorithm.title) })
     }
   ) {
     Column(

@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.mohammadfayaz.sorting.algorithms.SortingAlgorithms
+import dev.mohammadfayaz.sorting.algorithms.SortingAlgorithm
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +38,7 @@ fun HomeScreen() {
       )
       Spacer(modifier = Modifier.padding(top = 8.dp))
 
-      for (algorithm in SortingAlgorithms.values()) {
+      for (algorithm in SortingAlgorithm.values()) {
         ElevatedButton(
           onClick = { },
           modifier = Modifier

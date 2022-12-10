@@ -1,16 +1,15 @@
 package dev.mohammadfayaz.sorting.algorithms
 
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import dev.mohammadfayaz.sorting.navigation.Routes
 
-abstract class SortingAlgorithm {
-  var speed: SortingSpeed = SortingSpeed.MEDIUM
-
-  var list = mutableListOf<Int>()
-  protected var _listFlow = MutableSharedFlow<List<Int>>()
-  val listFlow: SharedFlow<List<Int>> = _listFlow
-
-  abstract suspend fun sort()
-
-  abstract fun name(): String
+enum class SortingAlgorithm(
+  val title: String,
+  val route: String,
+  val impl: SortingAlgorithmImpl
+) {
+  BUBBLE_SORT("Bubble Sort", Routes.bubbleSort, impl = BubbleSortImpl()),
+//  SELECT_SORT("Selection Sort", Routes.selectionSort),
+//  INSERT_SORT("Insertion Sort", Routes.insertionSort),
+//  MERGE_SORT("Merge Sort", Routes.mergeSort),
+//  QUICK_SORT("Quick Sort", Routes.quickSort),
 }

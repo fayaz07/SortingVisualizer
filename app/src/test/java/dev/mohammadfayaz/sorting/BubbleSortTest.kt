@@ -1,13 +1,13 @@
 package dev.mohammadfayaz.sorting
 
-import dev.mohammadfayaz.sorting.algorithms.BubbleSort
+import dev.mohammadfayaz.sorting.algorithms.BubbleSortImpl
 import dev.mohammadfayaz.sorting.algorithms.RandomList
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 class BubbleSortTest {
 
-  private val bubbleSort: BubbleSort = BubbleSort()
+  private val bubbleSort: BubbleSortImpl = BubbleSortImpl()
   private val randomList: RandomList = RandomList()
 
   @Test
