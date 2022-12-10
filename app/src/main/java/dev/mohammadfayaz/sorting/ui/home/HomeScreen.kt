@@ -19,7 +19,7 @@ import dev.mohammadfayaz.sorting.algorithms.SortingAlgorithm
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navigator: (algorithm: SortingAlgorithm) -> Unit) {
   Scaffold(
     topBar = {
       TopAppBar(title = { Text(text = "Sorting Visualizer") })
@@ -40,7 +40,9 @@ fun HomeScreen() {
 
       for (algorithm in SortingAlgorithm.values()) {
         ElevatedButton(
-          onClick = { },
+          onClick = {
+            navigator(algorithm)
+          },
           modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
@@ -55,5 +57,5 @@ fun HomeScreen() {
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-  HomeScreen()
+  HomeScreen({})
 }
