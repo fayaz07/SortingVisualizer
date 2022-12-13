@@ -41,21 +41,21 @@ class BubbleSortTest {
     job.cancel()
   }
 
-//  @Test
-//  fun run_on_random_list() = runBlocking {
-//    val initialList = randomList.integers(30)
-//    val sortedList = initialList.sorted()
-//    bubbleSort.list = initialList
-//    bubbleSort.sort()
-//    assert(bubbleSort.list == sortedList)
-//  }
-//
-//  @Test
-//  fun run_on_random_list_huge_size() = runBlocking {
-//    val initialList = randomList.integers(300)
-//    val sortedList = initialList.sorted()
-//    bubbleSort.list = initialList
-//    bubbleSort.sort()
-//    assert(bubbleSort.list == sortedList)
-//  }
+  @Test
+  fun large_set_test() = runBlocking {
+    val list = bubbleSort.genRandom(300)
+
+    println("List-> $list")
+
+    var finalList = mutableListOf<SortingItem>()
+    val job = launch {
+      bubbleSort.listFlow.consumeAsFlow().collect {
+        println("sort -> $it")
+        finalList = it as MutableList<SortingItem>
+      }
+    }
+    bubbleSort.sort()
+    assert(finalList == list.sortedBy { e-> e.value })
+    job.cancel()
+  }
 }
