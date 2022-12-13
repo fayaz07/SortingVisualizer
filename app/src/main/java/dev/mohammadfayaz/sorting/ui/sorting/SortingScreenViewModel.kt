@@ -82,6 +82,7 @@ class SortingScreenViewModel : ViewModel() {
   fun selectSpeed(value: SortingSpeed) {
     viewModelScope.launch {
       _state.emit(state.value.copy(speed = value))
+      state.value.sortingAlgorithm.impl.speed = value
     }
   }
 }

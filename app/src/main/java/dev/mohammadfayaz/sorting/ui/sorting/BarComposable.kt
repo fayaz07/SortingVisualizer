@@ -27,12 +27,22 @@ fun BarComposable(maxOffset: Int, offset: Int, maxWidth: Int) {
     modifier = Modifier
       .padding(top = 2.dp, bottom = 2.dp)
       .size(
-        width = width.dp,
+        width = maxWidth.dp,
         height = 32.dp
       )
-      .background(Color.Cyan),
+      .background(Color.White),
     contentAlignment = Alignment.Center
   ) {
+    Box(
+      modifier = Modifier
+        .padding(top = 2.dp, bottom = 2.dp)
+        .size(
+          width = width.dp,
+          height = 32.dp
+        )
+        .background(Color.Cyan)
+        .align(Alignment.CenterStart)
+    )
     Text(text = "$offset")
   }
 }

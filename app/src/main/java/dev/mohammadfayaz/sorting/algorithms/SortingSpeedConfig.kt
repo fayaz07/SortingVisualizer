@@ -6,8 +6,8 @@ import dev.mohammadfayaz.sorting.algorithms.SortingSpeed.MEDIUM
 
 fun SortingSpeed.delay(): Long {
   return when (this) {
-    SLOW -> 2000
-    MEDIUM -> 1000
-    FAST -> 500
+    SLOW -> 1000
+    MEDIUM -> 500
+    FAST -> 250
   }
 }
