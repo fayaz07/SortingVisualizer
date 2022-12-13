@@ -1,15 +1,9 @@
 package dev.mohammadfayaz.sorting.algorithms
 
-import dev.mohammadfayaz.sorting.model.SortingItem
 import dev.mohammadfayaz.sorting.model.SortingItemState
 import kotlinx.coroutines.delay
 
 class BubbleSortImpl : SortingAlgorithmImpl() {
-  override suspend fun genRandom(count: Int): MutableList<SortingItem> {
-    val randomIntegers = RandomList().integers(count)
-    list = randomIntegers
-    return list
-  }
 
   override suspend fun sort() {
     for (i in 0 until list.size) {
@@ -40,16 +34,5 @@ class BubbleSortImpl : SortingAlgorithmImpl() {
       listFlow.send(selectAndUnselect(-1))
       delay(speed.delayBeforeSort())
     }
-  }
-
-  private fun selectAndUnselect(currentIndex: Int): MutableList<SortingItem> {
-    val unselectedList = list
-    for (i in 0 until unselectedList.size) {
-      unselectedList[i].state = SortingItemState.IDLE
-    }
-    if (currentIndex != -1) {
-      unselectedList[currentIndex].state = SortingItemState.SELECTED
-    }
-    return unselectedList
   }
 }

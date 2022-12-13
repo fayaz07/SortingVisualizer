@@ -8,7 +8,7 @@ enum class SortingAlgorithm(
   val impl: SortingAlgorithmImpl
 ) {
   BUBBLE_SORT("Bubble Sort", Routes.bubbleSort, impl = BubbleSortImpl()),
-//  SELECT_SORT("Selection Sort", Routes.selectionSort),
+  SELECT_SORT("Selection Sort", Routes.selectionSort, impl = SelectionSortImpl()),
 //  INSERT_SORT("Insertion Sort", Routes.insertionSort),
 //  MERGE_SORT("Merge Sort", Routes.mergeSort),
 //  QUICK_SORT("Quick Sort", Routes.quickSort),

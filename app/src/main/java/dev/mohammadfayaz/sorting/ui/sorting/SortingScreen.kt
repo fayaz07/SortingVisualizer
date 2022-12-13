@@ -182,7 +182,7 @@ private fun SortingVisual(max: Int, itemsState: SnapshotStateList<SortingItem>) 
   LazyColumn(
     modifier = Modifier
       .fillMaxSize()
-      .padding(bottom = 32.dp)
+      .padding(bottom = 32.dp, top = 8.dp)
       .simpleVerticalScrollbar(lazyListState),
     state = lazyListState,
     horizontalAlignment = Alignment.Start,

@@ -1,13 +1,8 @@
 package dev.mohammadfayaz.sorting
 
-import android.util.Log
 import dev.mohammadfayaz.sorting.algorithms.BubbleSortImpl
-import dev.mohammadfayaz.sorting.algorithms.RandomList
 import dev.mohammadfayaz.sorting.algorithms.SortingSpeed
 import dev.mohammadfayaz.sorting.model.SortingItem
-import kotlinx.coroutines.channels.toList
-import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
