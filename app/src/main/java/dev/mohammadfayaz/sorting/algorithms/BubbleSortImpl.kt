@@ -3,6 +3,12 @@ package dev.mohammadfayaz.sorting.algorithms
 import kotlinx.coroutines.delay
 
 class BubbleSortImpl : SortingAlgorithmImpl() {
+  override suspend fun genRandom(count: Int): MutableList<Int> {
+    val randomIntegers = RandomList().integers(count)
+    list = randomIntegers
+    return list
+  }
+
   override suspend fun sort() {
     for (i in 0..list.size) {
       for (j in (i + 1) until list.size) {
@@ -13,8 +19,8 @@ class BubbleSortImpl : SortingAlgorithmImpl() {
           list[i] = x
         }
       }
+      listFlow.send(list)
+      delay(speed.delay())
     }
-    _listFlow.emit(list)
-    delay(speed.delay())
   }
 }

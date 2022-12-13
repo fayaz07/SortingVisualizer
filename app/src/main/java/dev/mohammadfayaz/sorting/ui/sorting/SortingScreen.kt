@@ -1,5 +1,9 @@
 package dev.mohammadfayaz.sorting.ui.sorting
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -8,10 +12,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -22,11 +27,20 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.mohammadfayaz.sorting.algorithms.SortingAlgorithm
@@ -75,7 +89,7 @@ private fun Body(
         .fillMaxWidth()
         .padding(horizontal = 8.dp),
       value = state.count,
-      onValueChange = { viewModel.updateItems(it) },
+      onValueChange = { viewModel.updateItemsCount(it) },
       label = {
         Text(text = "Items count")
       },
@@ -85,8 +99,23 @@ private fun Body(
     )
     Spacer(modifier = Modifier.padding(top = 8.dp))
     SpeedRadioButton(state, viewModel)
-
-    SortingVisual(state, viewModel)
+    Row {
+      ElevatedButton(
+        onClick = {
+          viewModel.generateItems()
+        }
+      ) {
+        Text(text = "Generate items")
+      }
+      ElevatedButton(
+        onClick = {
+          viewModel.sort()
+        }
+      ) {
+        Text(text = "Sort items")
+      }
+    }
+    SortingVisual(state.max, viewModel.itemsState)
   }
 }
 
@@ -129,12 +158,58 @@ private fun SpeedRadioButton(state: SortingScreenState, viewModel: SortingScreen
   }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun SortingVisual(
-  state: SortingScreenState,
-  viewModel: SortingScreenViewModel
-) {
-  LazyColumn {
+private fun SortingVisual(max: Int, itemsState: SnapshotStateList<Int>) {
+  val maxWidth = LocalConfiguration.current.screenWidthDp - 32
+  val lazyListState = rememberLazyListState()
 
+  LazyColumn(
+    modifier = Modifier
+      .fillMaxSize()
+      .padding(bottom = 32.dp)
+      .simpleVerticalScrollbar(lazyListState),
+    state = lazyListState,
+    horizontalAlignment = Alignment.Start,
+  ) {
+    items(itemsState.size) {
+      Box(modifier = Modifier.animateItemPlacement()) {
+        BarComposable(maxOffset = max, offset = itemsState[it], maxWidth = maxWidth)
+      }
+    }
+  }
+}
+
+fun Modifier.simpleVerticalScrollbar(
+  state: LazyListState,
+  width: Dp = 4.dp
+): Modifier = composed {
+  val targetAlpha = if (state.isScrollInProgress) 1f else 0f
+  val duration = if (state.isScrollInProgress) 150 else 500
+
+  val alpha by animateFloatAsState(
+    targetValue = targetAlpha,
+    animationSpec = tween(durationMillis = duration)
+  )
+
+  drawWithContent {
+    drawContent()
+
+    val firstVisibleElementIndex = state.layoutInfo.visibleItemsInfo.firstOrNull()?.index
+    val needDrawScrollbar = state.isScrollInProgress || alpha > 0.0f
+
+    // Draw scrollbar if scrolling or if the animation is still running and lazy column has content
+    if (needDrawScrollbar && firstVisibleElementIndex != null) {
+      val elementHeight = this.size.height / state.layoutInfo.totalItemsCount
+      val scrollbarOffsetY = firstVisibleElementIndex * elementHeight
+      val scrollbarHeight = state.layoutInfo.visibleItemsInfo.size * elementHeight
+
+      drawRect(
+        color = Color(0xffbcbcbc),
+        topLeft = Offset(this.size.width - width.toPx(), scrollbarOffsetY),
+        size = Size(width.toPx(), scrollbarHeight),
+        alpha = alpha
+      )
+    }
   }
 }
