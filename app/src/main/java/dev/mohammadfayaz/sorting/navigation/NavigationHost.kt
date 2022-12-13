@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import dev.mohammadfayaz.sorting.algorithms.SortingAlgorithm
 import dev.mohammadfayaz.sorting.ui.home.HomeScreen
 import dev.mohammadfayaz.sorting.ui.sorting.SortingScreen

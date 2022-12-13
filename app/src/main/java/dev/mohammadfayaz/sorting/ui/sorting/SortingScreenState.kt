@@ -7,5 +7,7 @@ data class SortingScreenState(
   val count: String,
   val speed: SortingSpeed,
   val sortingAlgorithm: SortingAlgorithm,
-  val max: Int = -9999
+  val max: Int = -9999,
+  val sortEnabled: Boolean,
+  val generateEnabled: Boolean
 )

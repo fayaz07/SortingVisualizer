@@ -3,6 +3,7 @@ package dev.mohammadfayaz.sorting.ui.sorting
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,6 +38,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.mohammadfayaz.sorting.algorithms.SortingAlgorithm
 import dev.mohammadfayaz.sorting.algorithms.SortingSpeed
+import dev.mohammadfayaz.sorting.model.SortingItem
 
 @Preview
 @Composable
@@ -78,6 +81,8 @@ private fun Body(
   state: SortingScreenState,
   viewModel: SortingScreenViewModel
 ) {
+  val focusManager = LocalFocusManager.current
+
   Column(
     modifier = Modifier
       .padding(paddingValues)
@@ -99,18 +104,26 @@ private fun Body(
     )
     Spacer(modifier = Modifier.padding(top = 8.dp))
     SpeedRadioButton(state, viewModel)
-    Row {
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
       ElevatedButton(
         onClick = {
+          focusManager.clearFocus()
           viewModel.generateItems()
-        }
+        },
+        enabled = state.generateEnabled
       ) {
         Text(text = "Generate items")
       }
       ElevatedButton(
+        modifier = Modifier.padding(start = 8.dp),
         onClick = {
+          focusManager.clearFocus()
           viewModel.sort()
-        }
+        },
+        enabled = state.sortEnabled
       ) {
         Text(text = "Sort items")
       }
@@ -130,28 +143,30 @@ private fun SpeedRadioButton(state: SortingScreenState, viewModel: SortingScreen
     )
     Row {
       radioOptions.forEach { item ->
-        Row(
-          modifier = Modifier
-            .selectable(
+        if (item != SortingSpeed.NO_DELAY) {
+          Row(
+            modifier = Modifier
+              .selectable(
+                selected = (item == state.speed),
+                onClick = {
+                  viewModel.selectSpeed(item)
+                }
+              )
+              .padding(horizontal = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+          ) {
+            RadioButton(
               selected = (item == state.speed),
-              onClick = {
-                viewModel.selectSpeed(item)
-              }
+              onClick = { viewModel.selectSpeed(item) }
             )
-            .padding(horizontal = 4.dp),
-          verticalAlignment = Alignment.CenterVertically
-        ) {
-          RadioButton(
-            selected = (item == state.speed),
-            onClick = { viewModel.selectSpeed(item) }
-          )
-          Text(
-            text = item.name,
-            style = MaterialTheme.typography.bodyLarge.copy(
-              fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.padding(start = 4.dp),
-          )
+            Text(
+              text = item.name,
+              style = MaterialTheme.typography.bodyLarge.copy(
+                fontWeight = FontWeight.Bold
+              ),
+              modifier = Modifier.padding(start = 4.dp),
+            )
+          }
         }
       }
     }
@@ -160,7 +175,7 @@ private fun SpeedRadioButton(state: SortingScreenState, viewModel: SortingScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun SortingVisual(max: Int, itemsState: SnapshotStateList<Int>) {
+private fun SortingVisual(max: Int, itemsState: SnapshotStateList<SortingItem>) {
   val maxWidth = LocalConfiguration.current.screenWidthDp - 32
   val lazyListState = rememberLazyListState()
 
@@ -174,7 +189,10 @@ private fun SortingVisual(max: Int, itemsState: SnapshotStateList<Int>) {
   ) {
     items(itemsState.size) {
       Box(modifier = Modifier.animateItemPlacement()) {
-        BarComposable(maxOffset = max, offset = itemsState[it], maxWidth = maxWidth)
+        BarComposable(
+          maxOffset = max, offset = itemsState[it].value, maxWidth = maxWidth,
+          state = itemsState[it].state
+        )
       }
     }
   }

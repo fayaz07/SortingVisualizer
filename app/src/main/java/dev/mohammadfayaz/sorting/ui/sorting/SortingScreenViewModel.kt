@@ -6,10 +6,11 @@ import androidx.lifecycle.viewModelScope
 import dev.mohammadfayaz.sorting.algorithms.FindMax
 import dev.mohammadfayaz.sorting.algorithms.SortingAlgorithm
 import dev.mohammadfayaz.sorting.algorithms.SortingSpeed
+import dev.mohammadfayaz.sorting.model.SortingItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class SortingScreenViewModel : ViewModel() {
@@ -18,11 +19,13 @@ class SortingScreenViewModel : ViewModel() {
       count = "",
       speed = SortingSpeed.MEDIUM,
       sortingAlgorithm = SortingAlgorithm.BUBBLE_SORT,
+      sortEnabled = false,
+      generateEnabled = false
     )
   )
   val state: StateFlow<SortingScreenState> = _state
 
-  private val _itemsState = mutableStateListOf<Int>()
+  private val _itemsState = mutableStateListOf<SortingItem>()
   val itemsState = _itemsState
 
   private var sortingJob: Job? = null
@@ -31,7 +34,7 @@ class SortingScreenViewModel : ViewModel() {
     viewModelScope.launch {
       _state.emit(state.value.copy(sortingAlgorithm = value))
 
-      value.impl.listFlow.consumeAsFlow().collect {
+      value.impl.listFlow.receiveAsFlow().collect {
         _itemsState.clear()
         _itemsState.addAll(it)
       }
@@ -43,7 +46,8 @@ class SortingScreenViewModel : ViewModel() {
       val filtered = value.filter { c -> c.isDigit() }
       _state.emit(
         state.value.copy(
-          count = filtered
+          count = filtered,
+          generateEnabled = filtered.isNotEmpty() && Integer.parseInt(filtered) > 2
         )
       )
     }
@@ -66,8 +70,7 @@ class SortingScreenViewModel : ViewModel() {
       val maxValue = FindMax().inIntegers(list)
       _state.emit(
         state.value.copy(
-          max = maxValue,
-          sortingAlgorithm = algorithm
+          max = maxValue, sortingAlgorithm = algorithm, sortEnabled = true
         )
       )
     }
@@ -75,7 +78,9 @@ class SortingScreenViewModel : ViewModel() {
 
   fun sort() {
     viewModelScope.launch {
+      _state.emit(state.value.copy(sortEnabled = false, generateEnabled = false))
       state.value.sortingAlgorithm.impl.sort()
+      _state.emit(state.value.copy(sortEnabled = true, generateEnabled = true))
     }
   }
 

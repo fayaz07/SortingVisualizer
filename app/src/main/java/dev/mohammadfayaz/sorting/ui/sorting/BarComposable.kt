@@ -6,17 +6,25 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.mohammadfayaz.sorting.model.SortingItemState
 
 @Composable
-fun BarComposable(maxOffset: Int, offset: Int, maxWidth: Int) {
+fun BarComposable(
+  maxOffset: Int,
+  offset: Int,
+  maxWidth: Int,
+  state: SortingItemState = SortingItemState.IDLE
+) {
   val maxOffsetF = maxOffset.toFloat()
   val offsetF = offset.toFloat()
   val maxWidthF = maxWidth.toFloat()
@@ -36,11 +44,12 @@ fun BarComposable(maxOffset: Int, offset: Int, maxWidth: Int) {
     Box(
       modifier = Modifier
         .padding(top = 2.dp, bottom = 2.dp)
+        .clip(RoundedCornerShape(4.dp))
         .size(
           width = width.dp,
           height = 32.dp
         )
-        .background(Color.Cyan)
+        .background(state.color)
         .align(Alignment.CenterStart)
     )
     Text(text = "$offset")
@@ -57,8 +66,8 @@ private fun BarComposablePreview() {
   Column(
     modifier = Modifier.width(screenWidth.dp)
   ) {
-    BarComposable(maxOffset = 100, offset = 100, screenWidth)
-    BarComposable(maxOffset = 100, offset = 60, screenWidth)
+    BarComposable(maxOffset = 100, offset = 100, screenWidth, SortingItemState.SELECTED)
+    BarComposable(maxOffset = 100, offset = 60, screenWidth, SortingItemState.SWAPPING)
     BarComposable(maxOffset = 100, offset = 75, screenWidth)
     BarComposable(maxOffset = 100, offset = 90, screenWidth)
     BarComposable(maxOffset = 100, offset = 23, screenWidth)
