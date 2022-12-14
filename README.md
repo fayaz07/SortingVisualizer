@@ -12,6 +12,11 @@
 
 <img src="repo/selection_1.png" width="30%" /> <img src="repo/selection_2.png" width="30%" /> <img src="repo/selection_3.png" width="30%" />
 
+## Insertion Sort
+
+<a href="repo/insertion-slow.mp4">Insertion Sort Slow</a>  <a href="repo/insertion-medium.mp4">Insertion Sort Medium</a>  <a href="repo/insertion-fast.mp4">Insertion Sort Fast</a>
+
+<img src="repo/insertion_1.png" width="30%" /> <img src="repo/insertion_2.png" width="30%" /> <img src="repo/insertion_3.png" width="30%" />
 
 ## Credits
 - Thanks to [CloudConvert](https://cloudconvert.com/) for converting `webm` to `mp4`
