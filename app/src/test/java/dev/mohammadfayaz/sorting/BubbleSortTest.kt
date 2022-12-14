@@ -1,6 +1,6 @@
 package dev.mohammadfayaz.sorting
 
-import dev.mohammadfayaz.sorting.algorithms.BubbleSortImpl
+import dev.mohammadfayaz.sorting.algorithms.sorting.BubbleSortImpl
 import dev.mohammadfayaz.sorting.algorithms.SortingSpeed
 import dev.mohammadfayaz.sorting.model.SortingItem
 import kotlinx.coroutines.flow.consumeAsFlow
