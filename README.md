@@ -14,4 +14,4 @@
 
 
 ## Credits
-- Thanks to (CloudConvert)[https://cloudconvert.com/] for converting `webm` to `mp4`
+- Thanks to [CloudConvert](https://cloudconvert.com/) for converting `webm` to `mp4`

@@ -13,5 +13,7 @@ class InsertionSortImpl : SortingAlgorithmImpl() {
 
       list[j + 1] = key
     }
+
+    listFlow.send(list)
   }
 }
