@@ -18,7 +18,9 @@ fun SortingVisualizerNavHost(navController: NavHostController) {
     }
     for (algorithm in SortingAlgorithm.values()) {
       composable(algorithm.route) {
-        SortingScreen(algorithm = algorithm)
+        SortingScreen(algorithm = algorithm) {
+          navController.popBackStack()
+        }
       }
     }
   }

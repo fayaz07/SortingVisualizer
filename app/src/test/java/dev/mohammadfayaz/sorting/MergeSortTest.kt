@@ -25,7 +25,7 @@ class MergeSortTest{
     var finalList = mutableListOf<SortingItem>()
     val job = launch {
       mergeSort.listFlow.consumeAsFlow().collect {
-        println("sort -> $it")
+        println("sort -> $it\n\n")
         finalList = it as MutableList<SortingItem>
       }
     }
